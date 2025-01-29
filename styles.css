@@ -1,0 +1,47 @@
+@font-face {
+  font-family: "Material Icons";
+  font-style: normal;
+  font-weight: 400;
+  src: url("assets/fonts/MaterialIcons-Regular.ttf") format("truetype");
+}
+
+.material-icons {
+  font-family: "Material Icons", sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+}
+
+body {
+  background-color: rgba(12, 12, 12, 0.5);
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.custom-titlebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+.close-btn {
+  display: flex;
+  align-items: center;
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding-inline: 15px;
+  padding-block: 10px;
+  font-size: 16px;
+}
+
+.close-btn:hover {
+  background: #232323;
+}

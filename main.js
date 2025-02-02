@@ -20,8 +20,6 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
-  ipcMain.handle("ping", () => "pong");
-
   createWindow();
 
   ipcMain.on("close-window", () => {

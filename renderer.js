@@ -1,3 +1,5 @@
+const { ipcRenderer, bufferFrom } = window.electronAPI;
+
 const startButton = document.getElementById("startButton");
 const stopButton = document.getElementById("stopButton");
 const video = document.querySelector("video");
@@ -10,16 +12,16 @@ startButton.addEventListener("click", () => {
     .getDisplayMedia({
       audio: true,
       video: {
-        width: 1280,
-        height: 720,
+        width: 1920,
+        height: 1080,
         frameRate: 60,
       },
     })
     .then((stream) => {
-      video.srcObject = stream;
-      video.muted = true;
-      console.log(video.srcObject);
-      video.onloadedmetadata = (e) => video.play();
+      // video.srcObject = stream;
+      // video.muted = true;
+      // console.log(video.srcObject);
+      // video.onloadedmetadata = (e) => video.play();
 
       // Create MediaRecorder instance
       mediaRecorder = new MediaRecorder(stream, { mimeType: "video/webm; codecs=vp9,opus" });
@@ -30,20 +32,17 @@ startButton.addEventListener("click", () => {
       };
 
       // When recording stops, create a Blob from chunks and trigger a download
-      mediaRecorder.onstop = () => {
+      const { send, bufferFrom } = window.electronAPI; // Use exposed APIs
+
+      mediaRecorder.onstop = async () => {
         const blob = new Blob(recordedChunks, { type: "video/webm" });
-        const url = URL.createObjectURL(blob);
+        const arrayBuffer = await blob.arrayBuffer();
 
-        // Trigger download of the video
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "recording.webm"; // Name of the downloaded file
-        document.body.appendChild(a);
-        a.click();
+        // Convert ArrayBuffer to Buffer using the exposed function
+        const buffer = bufferFrom(arrayBuffer);
 
-        // Clean up
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        // Send data to the main process for saving
+        send("save-video", buffer);
       };
 
       mediaRecorder.start();
@@ -54,7 +53,7 @@ startButton.addEventListener("click", () => {
 stopButton.addEventListener("click", () => {
   if (mediaRecorder && mediaRecorder.state === "recording") {
     mediaRecorder.stop();
-    video.srcObject = null;
+    // video.srcObject = null;
   }
 });
 

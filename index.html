@@ -2,7 +2,6 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
     <title>Hello from Electron renderer!</title>
@@ -14,10 +13,10 @@
       <button class="close-btn" id="closeButton"><i class="material-icons">close</i></button>
     </div>
     <div class="flex flex-col items-center">
-      <video width="1280" height="720" autoplay></video>
+      <!-- <video width="1280" height="720" autoplay></video> -->
       <div class="flex flex-row justify-between w-64">
-        <button id="startButton" class="w-24 h-12 bg-green-500 rounded-lg">Start</button>
-        <button id="stopButton" class="w-24 h-12 bg-red-500 rounded-lg">Stop</button>
+        <button id="startButton" class="duration-200 ease-in-out w-24 h-12 bg-green-500 rounded-lg hover:scale-110 hover:bg-green-600 active:scale-100">Start</button>
+        <button id="stopButton" class="duration-200 ease-in-out w-24 h-12 bg-red-500 rounded-lg hover:scale-110 hover:bg-red-600 active:scale-100">Stop</button>
       </div>
     </div>
   </body>

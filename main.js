@@ -1,5 +1,6 @@
-const { app, BrowserWindow, ipcMain, desktopCapturer, session } = require("electron/main");
-const path = require("node:path");
+const { app, BrowserWindow, ipcMain, desktopCapturer, session, dialog } = require("electron/main");
+const path = require("path");
+const fs = require("fs");
 
 let win;
 
@@ -14,6 +15,7 @@ const createWindow = () => {
       contextIsolation: true,
       enableRemoteModule: false,
       sandbox: false,
+      nodeIntegration: false,
     },
   });
 
@@ -46,6 +48,28 @@ app.whenReady().then(() => {
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
+    }
+  });
+});
+
+ipcMain.on("save-video", async (event, buffer) => {
+  // Define the Killfeed folder inside the user's Videos directory
+  const killfeedFolder = path.join(app.getPath("videos"), "Killfeed");
+
+  // Ensure the Killfeed folder exists, create it if not
+  if (!fs.existsSync(killfeedFolder)) {
+    fs.mkdirSync(killfeedFolder, { recursive: true }); // Create folder if it doesn't exist
+  }
+
+  // Define the full save path inside Killfeed
+  const savePath = path.join(killfeedFolder, `recording_${Date.now()}.webm`);
+
+  // Write the file
+  fs.writeFile(savePath, buffer, (err) => {
+    if (err) {
+      console.error("Failed to save video:", err);
+    } else {
+      console.log("Video saved to:", savePath);
     }
   });
 });
